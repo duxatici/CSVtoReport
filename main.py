@@ -1,0 +1,52 @@
+# ruff: noqa: F401
+import logging
+
+from tabulate import tabulate
+
+from logger import init_logger
+from exceptions import AppError
+from reports.clickbait import Clickbait
+from models.video_metrics import VideoMetric
+
+logger = logging.getLogger(__name__)
+
+stats1 = """Я бросил IT и стал фермером,18.2,35,45200,1240,4.2
+Как я спал по 4 часа и ничего не понял,22.5,28,128700,3150,3.1
+Почему сеньоры не носят галстуки,9.5,82,31500,890,8.9
+Секрет который скрывают тимлиды,25.0,22,254000,8900,2.5
+Купил джуну макбук и он уволился,19.0,38,87600,2100,4.5
+Честный обзор на печеньки в офисе,6.0,91,12300,450,10.2
+Как я задолжал ревьюеру 1000 строк кода,21.0,35,67300,1890,4.0
+Рефакторинг выходного дня,8.5,76,28900,780,7.8
+Почему я не использую ChatGPT на собесах,16.5,42,54100,1320,4.8
+Я переписал всё на Go и пожалел,14.2,68,43800,1150,6.5"""
+
+
+def main():
+    try:
+        records = [
+            VideoMetric(
+                row.split(",")[0], float(row.split(",")[1]), int(row.split(",")[2])
+            )
+            for row in stats1.split("\n")
+        ]
+
+        report = Clickbait()
+
+        generated_report = report.generate(records)
+
+        table = tabulate(
+            generated_report,
+            headers=["Title", "Ctr", "Retention rate"],
+            tablefmt="fancy_grid",
+        )
+
+        print(table)
+    except AppError as e:
+        logger.error(f"Ошибка: {e}")
+    except Exception as e:
+        logger.error(f"Неожиданная ошибка: {e}")
+
+
+if __name__ == "__main__":
+    main()
