@@ -5,6 +5,7 @@ from tabulate import tabulate
 
 from logger import init_logger
 from exceptions import AppError
+from reports.registry import REPORTS, get_report
 from services.csv_reader import read_csv_many
 from services.parser import parse_metrics_row
 from reports.clickbait import Clickbait
@@ -19,7 +20,7 @@ def main():
 
         records = [parse_metrics_row(row) for row in rows]
 
-        report = Clickbait()
+        report = get_report("clickbait")
 
         generated_report = report.generate(records)
 
