@@ -4,13 +4,11 @@ import argparse
 
 from tabulate import tabulate
 
-from logger import init_logger
 from exceptions import AppError
 from reports.registry import REPORTS, get_report
 from services.csv_reader import read_csv_many
 from services.parser import parse_metrics_row
 from reports.clickbait import Clickbait
-from models.video_metrics import VideoMetric
 
 logger = logging.getLogger(__name__)
 
