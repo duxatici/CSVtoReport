@@ -1,5 +1,6 @@
 # ruff: noqa: F401
 import logging
+import argparse
 
 from tabulate import tabulate
 
@@ -14,13 +15,37 @@ from models.video_metrics import VideoMetric
 logger = logging.getLogger(__name__)
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Генерирует отчет из CSV файла")
+    parser.add_argument(
+        "-f",
+        "--files",
+        type=str,
+        nargs="+",
+        required=True,
+        help="CSV файлы для обработки",
+    )
+    parser.add_argument(
+        "-r",
+        "--report",
+        type=str,
+        choices=REPORTS.keys(),
+        default="clickbait",
+        help="Тип отчета для генерации",
+    )
+
+    return parser.parse_args()
+
+
 def main():
     try:
-        rows = read_csv_many(["file_examples/stats1.csv", "file_examples/stats2.csv"])
+        args = parse_args()
+
+        rows = read_csv_many(args.files)
 
         records = [parse_metrics_row(row) for row in rows]
 
-        report = get_report("clickbait")
+        report = get_report(args.report)
 
         generated_report = report.generate(records)
 
@@ -31,6 +56,7 @@ def main():
         )
 
         print(table)
+
     except AppError as e:
         logger.error(f"Ошибка: {e}")
     except Exception as e:
