@@ -1,7 +1,7 @@
 import pytest
 
 from models.video_metrics import VideoMetric
-from reports.clickbait import Clickbait, ClickbaitRow
+from reports.clickbait import Clickbait
 
 
 @pytest.mark.parametrize(
@@ -15,7 +15,7 @@ from reports.clickbait import Clickbait, ClickbaitRow
                 VideoMetric("Почему сеньоры не носят галстуки", 9.5, 82),
             ],
             [
-                ClickbaitRow(
+                VideoMetric(
                     title="Я бросил IT и стал фермером", ctr=18.2, retention_rate=35
                 )
             ],
@@ -30,12 +30,12 @@ from reports.clickbait import Clickbait, ClickbaitRow
                 VideoMetric("Почему сеньоры не носят галстуки", 9.5, 82),
             ],
             [
-                ClickbaitRow(
+                VideoMetric(
                     title="Как я спал по 4 часа и ничего не понял",
                     ctr=22.5,
                     retention_rate=38,
                 ),
-                ClickbaitRow(
+                VideoMetric(
                     title="Я бросил IT и стал фермером", ctr=18.2, retention_rate=35
                 ),
             ],

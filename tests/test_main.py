@@ -3,7 +3,7 @@ import pytest
 from main import get_report
 from services.csv_reader import read_csv
 from services.parser import parse_metrics_row
-from reports.clickbait import ClickbaitRow
+from models.video_metrics import VideoMetric
 
 
 @pytest.fixture
@@ -26,7 +26,7 @@ def test_csv_integration(sample_file):
     result = report.generate(records)
 
     expected_row = [
-        ClickbaitRow(title="Я бросил IT и стал фермером", ctr=18.2, retention_rate=35)
+        VideoMetric(title="Я бросил IT и стал фермером", ctr=18.2, retention_rate=35)
     ]
     assert result == expected_row
 
